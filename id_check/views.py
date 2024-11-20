@@ -30,6 +30,7 @@ def home(request):
                     'date_of_birth': date_of_birth,
                     'gender': gender,
                     'is_sa_citizen': is_sa_citizen,
+                    'search_count': 1
                 }
             )
             if not created:
