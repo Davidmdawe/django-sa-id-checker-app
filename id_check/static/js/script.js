@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
+    // Initially disable the search button
+    searchButton.disabled = true;
+
     // Enable the button only when the input is valid
     idInput.addEventListener('input', () => {
         const idNumber = idInput.value.trim();
