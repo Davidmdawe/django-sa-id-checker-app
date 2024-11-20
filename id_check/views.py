@@ -10,9 +10,6 @@ from django.utils.timezone import now
 API_KEY = "4w7vO81O0VeLpvMqijl3e1lpU4sGuIGb"
 
 def home(request):
-    IDInfo.objects.all().delete()
-    SearchLog.objects.all().delete()
-    PublicHoliday.objects.all().delete()
     form = IDForm()
     result = None
     chart_data = []
