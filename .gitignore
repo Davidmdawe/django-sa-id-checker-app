@@ -1,0 +1,15 @@
+# Virtual environment
+venv/
+__pycache__/
+
+# Django files
+*.pyc
+*.pyo
+*.log
+*.sqlite3
+
+# Secret files
+.env
+
+# Node.js files (if applicable)
+node_modules/
