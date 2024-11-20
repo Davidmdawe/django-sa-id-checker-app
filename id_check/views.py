@@ -5,10 +5,8 @@ from django.db.models import Count
 from .forms import IDForm
 from datetime import datetime
 from django.utils.timezone import now
-
 # Calendarific API key
 API_KEY = "4w7vO81O0VeLpvMqijl3e1lpU4sGuIGb"
-
 def home(request):
     form = IDForm()
     result = None
@@ -30,6 +28,7 @@ def home(request):
                     'date_of_birth': date_of_birth,
                     'gender': gender,
                     'is_sa_citizen': is_sa_citizen,
+                    'search_count': 1,  # Set search_count to 1 for new entries
                 }
             )
             if not created:

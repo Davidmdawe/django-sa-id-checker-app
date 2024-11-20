@@ -4,11 +4,13 @@ from django import forms
 class IDForm(forms.Form):
     id_number = forms.CharField(
         max_length=13,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your SA ID Number'}),
+        label="Enter South African ID Number",  
+        widget=forms.TextInput(attrs={'placeholder': 'SA ID Number'}),
     )
 
     def clean_id_number(self):
-        id_number = str(self.cleaned_data['id_number']).strip()  # Ensure it's a string
+        # Ensuring it's a string
+        id_number = str(self.cleaned_data['id_number']).strip()  
         
         # 1. Checking if the ID number is numeric and has 13 digits
         if not id_number.isdigit() or len(id_number) != 13:
