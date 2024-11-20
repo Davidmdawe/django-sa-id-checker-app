@@ -147,6 +147,19 @@
                 height: 250px; /* Adjusted height for smaller screens */
             }
         }
+          /* Your existing styles */
+        form button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 50%;
+            box-sizing: border-box;
+        }
     </style>
     <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
@@ -171,7 +184,7 @@
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" {% if form.id_number.errors %} disabled {% endif %}>Search</button>
+                <button type="submit" >Search</button>
             </form>
 
             <div class="chart-container">
@@ -223,6 +236,9 @@
                     text: 'Date'
                 }
             },
+            credits: {
+                enabled: false
+            },
             yAxis: {
                 title: {
                     text: 'Search Count'
@@ -239,5 +255,3 @@
     </script>
 </body>
 </html>
-
-
