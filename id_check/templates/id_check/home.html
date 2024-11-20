@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="iewport" content="width=device-width, initial-scale=1.0">
     <title>SA ID Number Check</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/a/af/Flag_of_South_Africa.svg" type="image/png">
+    
     <style>
+        
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -12,14 +15,32 @@
             background-color: #f4f4f9;
             color: #333;
             display: flex;
-            justify-content: center;
             align-items: center;
+            flex-direction: column;
+            justify-content: flex-start;
             min-height: 100vh;
         }
 
+        .disclaimer {
+            background-color: #005A9C;
+            color: white;
+            text-align: center;
+            padding: 0.5rem; /* Reduced padding */
+            font-size: 0.8rem; /* Smaller font size */
+            line-height: 1.2; /* Adjusted line height */
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .disclaimer a {
+            color: #ffdd57;
+            text-decoration: underline;
+        }
+
         .container {
-            width: 90%;
-            max-width: 1200px;
+            width: 98%; /* Occupies almost the entire screen width */
+            max-width: 1600px; /* Increased the maximum width */
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -29,6 +50,26 @@
             padding: 1.5rem;
             box-sizing: border-box;
         }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 80%; /* Input fields scale with container */
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr; /* Single-column layout for smaller screens */
+            }
+
+            input {
+                width: 100%; /* Full width for inputs on smaller devices */
+            }
+        }
+
 
         .header {
             grid-column: 1 / -1; /* Spans both columns */
@@ -164,6 +205,13 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
+    <div class="disclaimer">
+        <p>
+            By using this service, you agree to comply with the <strong>Protection of Personal Information Act (POPIA)</strong>. 
+            We are committed to protecting your personal data and ensuring it is used in accordance with the law.
+            For more information, read our Privacy Policy.
+        </p>
+    </div>
     <div class="container">
         <div class="header">
             <h1>
@@ -184,7 +232,7 @@
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" >Search</button>
+                <button id="search-button" type="submit">Search</button>
             </form>
 
             <div class="chart-container">
@@ -252,6 +300,44 @@
                 }))
             }]
         });
+
+        const idInput = document.querySelector('input[name="id_number"]');
+        const searchButton = document.getElementById('search-button');
+
+        // Function to validate the ID number
+        function isValidIdNumber(idNumber) {
+            if (!/^\d{13}$/.test(idNumber)) return false;
+
+            const dob = idNumber.slice(0, 6); // YYMMDD
+            const year = parseInt(dob.slice(0, 2), 10) + (dob.slice(0, 2) > '22' ? 1900 : 2000);
+            const month = parseInt(dob.slice(2, 4), 10);
+            const day = parseInt(dob.slice(4, 6), 10);
+
+            const birthDate = new Date(year, month - 1, day);
+            if (birthDate.getFullYear() !== year || birthDate.getMonth() + 1 !== month || birthDate.getDate() !== day) return false;
+            if (birthDate > new Date()) return false;
+
+            return true;
+        }
+
+        // Enable the button only when the input is valid
+        idInput.addEventListener('input', () => {
+            const idNumber = idInput.value.trim();
+            if (isValidIdNumber(idNumber)) {
+                searchButton.disabled = false;
+            } else {
+                searchButton.disabled = true;
+            }
+        });
+
+        // If the search was successful, ensure the button stays enabled
+        document.addEventListener('DOMContentLoaded', () => {
+            if (isValidIdNumber(idInput.value.trim())) {
+                searchButton.disabled = false;
+            }
+        });
+
     </script>
 </body>
 </html>
+
