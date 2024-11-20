@@ -4,7 +4,8 @@ from django import forms
 class IDForm(forms.Form):
     id_number = forms.CharField(
         max_length=13,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter your SA ID Number'}),
+        label="Enter South African ID Number",  
+        widget=forms.TextInput(attrs={'placeholder': 'SA ID Number'}),
     )
 
     def clean_id_number(self):
